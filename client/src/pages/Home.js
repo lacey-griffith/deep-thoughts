@@ -8,7 +8,6 @@ const Home = () => {
   // use query hook to make a query requests
   const { loading, data } = useQuery(QUERY_THOUGHTS)
   const thoughts = data?.thoughts || [];
-  console.log(thoughts)
   return (
     <main>
       <div className='flex-row justify-space-between'>
