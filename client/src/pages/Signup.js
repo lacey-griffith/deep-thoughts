@@ -7,6 +7,7 @@ import auth from '../utils/auth';
 const Signup = () => {
   const [formState, setFormState] = useState({ username: '', email: '', password: '' });
 
+  //addUser comes from the mutation to add a new user
   const [addUser, {error}] = useMutation(ADD_USER)
 
   // update state based on form input changes

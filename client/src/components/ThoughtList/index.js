@@ -1,11 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 
-const ThoughtList = ({ thoughts, title }) => {
-    // if(thoughts === undefined){
-    //     return <div>undefined still</div>
-    // }
-    
+const ThoughtList = ({ thoughts, title }) => {    
     if(!thoughts.length){
         return <h3>No thoughts yet!</h3>
     }

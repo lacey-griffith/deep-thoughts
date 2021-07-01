@@ -2,14 +2,13 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 
 const FriendsList = ({ friendCount, username, friends}) => {
-    console.log(friendCount)
     if(!friends || !friends.length){
         return <p className='bg-dark text-light p-3'>{username} has no friends. 😭</p>
     }
     return(
         <div>
             <h5>
-                {username}'s {friendCount} {friendCount === 1 ? 'friend' : 'friends'}
+                {username} has {friendCount} {friendCount === 1 ? 'friend' : 'friends'}
             </h5>
             {friends.map(friend => (
                 <button className='btn w-100 display-block mb-2' key={friend._id}>
