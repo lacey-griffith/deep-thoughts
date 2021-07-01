@@ -2,8 +2,9 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 
 const FriendsList = ({ friendCount, username, friends}) => {
+    console.log(friendCount)
     if(!friends || !friends.length){
-        return <p className='bg-dark text-light p-3'>{username} has no friends</p>
+        return <p className='bg-dark text-light p-3'>{username} has no friends. 😭</p>
     }
     return(
         <div>

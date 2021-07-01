@@ -1,20 +1,29 @@
 import React from 'react';
-
-import { useParams } from 'react-router';
+import { useQuery } from '@apollo/client';
+import { Redirect, useParams } from 'react-router';
 
 import ThoughtList from '../components/ThoughtList';
 import FriendsList from '../components/FriendsList';
 
-import { useQuery } from '@apollo/client';
-import { QUERY_USER } from '../utils/queries';
+import { QUERY_USER, QUERY_ME } from '../utils/queries';
+import auth from '../utils/auth';
 
 const Profile = () => {
 
   const {username: userParam} = useParams();
+  const {loading, data} = useQuery(userParam ? QUERY_USER : QUERY_ME, { variables: { username: userParam}})
+  const user = data?.me || data?.user || {};
 
-  const {loading, data} = useQuery(QUERY_USER, { variables: { username: userParam } })
-
-  const user = data?.user || {};
+  if(auth.loggedIn() && auth.getProfile().data.username === userParam){
+    return <Redirect to='/profile'/>
+  }
+  if(!user?.username){
+    return (
+      <h4>
+        You need to be logged in to see this page. Click 'Log In' or 'Sign Up' to gain access! 
+      </h4>
+    )
+  }
 
   if(loading){
     return <div>Loading...</div>
@@ -23,7 +32,7 @@ const Profile = () => {
     <div>
       <div className="flex-row mb-3">
         <h2 className="bg-dark text-secondary p-3 display-inline-block">
-          {user.username}'s Profile
+          {userParam ? `${user.username}'s` : 'My'} profile
         </h2>
       </div>
 
