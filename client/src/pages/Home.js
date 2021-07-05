@@ -14,9 +14,11 @@ const Home = () => {
 
   // use query hook to make a query requests
   const { loading, data } = useQuery(QUERY_THOUGHTS)
+
   //if the user is logged in, userData will hold all the user info from the query_me_basic request
   const { data: userData } = useQuery(QUERY_ME_BASIC)
-  console.log(userData)
+  // console.log(userData)
+  
   const thoughts = data?.thoughts || [];
   return (
     <main>
