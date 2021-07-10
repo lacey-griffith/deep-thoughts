@@ -1,7 +1,7 @@
 import React from 'react';
 import { ApolloProvider, ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-// import {setContext} from '@apollo/client/link/context'
+import {setContext} from '@apollo/client/link/context'
 
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -13,45 +13,45 @@ import SingleThought from './pages/SingleThought';
 import Profile from './pages/Profile';
 import Signup from './pages/Signup';
 
-const client = new ApolloClient({
-  request: operation => {
-    const token = localStorage.getItem('id_token');
+// const client = new ApolloClient({
+//   request: operation => {
+//     const token = localStorage.getItem('id_token');
 
-    operation.setContext({
-      headers: {
-        authorization: token ? `Bearer ${token}` : ''
-      }
-    });
-  },
+//     operation.setContext({
+//       headers: {
+//         authorization: token ? `Bearer ${token}` : ''
+//       }
+//     });
+//   },
+//   uri: '/graphql'
+// });
+
+// establish new link to the server at /graphql endpoint
+const httpLink = createHttpLink({
+  // location for backend server
+  // react server enviroment runs at localhost:3000
   uri: '/graphql'
-});
+})
+
+// create a 'middleware' function that retrieves token and combines it with existing httpLink
+const authLink = setContext((_, {headers}) => {
+const token = localStorage.getItem('id_token')
+return {
+  headers : {
+    ...headers,
+    authorization: token ? `Bearer ${token}` : '',
+  },
+}
+})
 
 // instantiate apollo client instance and create connection to the above endpoint
 // also create new cache object
-// const client = new ApolloClient({
-//   link: authLink.concat(httpLink),
-//   cache: new InMemoryCache()
-// })
+const client = new ApolloClient({
+  link: authLink.concat(httpLink),
+  cache: new InMemoryCache()
+})
 
 
-// establish new link to the server at /graphql endpoint
-// const httpLink = createHttpLink({
-  // location for backend server
-  // react server enviroment runs at localhost:3000
-//   uri: '/graphql'
-// })
-
-// create a 'middleware' function that retrieves token and combines it with existing httpLink
-// const authLink = setContext((_, {headers}) => {
-//   const token = localStorage.getItem('id_token')
-
-//   return {
-//     headers : {
-//       ...headers,
-//       authorization: token ? `Bearer ${token}` : '',
-//     },
-//   }
-// })
 
 function App() {
   return (
